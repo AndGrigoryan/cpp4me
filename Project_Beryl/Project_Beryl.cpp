@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <algorithm>
 using namespace std;
 
 struct IntArray
@@ -36,36 +36,49 @@ struct IntArray
 
 	IntArray& operator =(IntArray const& other)
 	{
-		this->size_ = other.size_;
-		this->data_ = new int[size_];
-		for (size_t i = 0; i < size_; i++)
-		{
-			this->data_[i] = other.data_[i];
+		if(this != &other){
+			if(&other != this)
+			{
+				IntArray(other).swap(*this);
+			}
+			return *this;
 		}
+
+		cout << "Operator: " << this << endl;
+
+		return *this;
 	}
 
-	void print()
+	void swap(IntArray& other)
 	{
-		for (size_t i = 0; i < size_; i++)
-		{
-			cout << this->data_[i] << " ";
-		}
-		cout << endl;
+		std::swap(this->size_, other.size_);
+		std::swap(this->data_, other.data_);
+	}
+
+	int& operator [](int index)
+	{
+		return this->data_[index];
+	}
+
+	size_t  size() const
+	{
+		return size_;
 	}
 
 private:
-	int size_;
+	size_t size_;
 	int* data_;
 };
 
 int main() 
 {
-	IntArray a1(20);
-	a1.print();
+	IntArray a1(14);
 
-	IntArray a2;
-	a2 = a1;
-	a2.print();
-
+	for (size_t i = 0; i < a1.size(); i++)
+	{
+		cout << a1[i] << " ";
+	}
+	cout << endl;
+	
     return 0; 
 } 
